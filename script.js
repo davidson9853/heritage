@@ -356,6 +356,7 @@ function initAccessibility() {
 document.addEventListener('DOMContentLoaded', () => {
   initTheme();
   initLoginModal();
+  initHeroButtons();
   initSmoothScrolling();
   initMobileMenu();
   initScrollAnimations();
@@ -372,6 +373,29 @@ document.addEventListener('DOMContentLoaded', () => {
   // Initialize shimmer loading after a short delay
   setTimeout(initShimmerLoading, 500);
 });
+
+// Hero Buttons Functionality
+function initHeroButtons() {
+  const exploreBtn = document.querySelector('.cta-primary');
+  const watchBtn = document.querySelector('.cta-secondary');
+  const loginModal = document.getElementById('login-modal');
+  
+  // Explore Heritage button
+  if (exploreBtn) {
+    exploreBtn.addEventListener('click', () => {
+      loginModal.classList.add('active');
+      document.body.style.overflow = 'hidden';
+    });
+  }
+  
+  // Watch Introduction button
+  if (watchBtn) {
+    watchBtn.addEventListener('click', () => {
+      loginModal.classList.add('active');
+      document.body.style.overflow = 'hidden';
+    });
+  }
+}
 
 // Login Modal Management
 function initLoginModal() {
