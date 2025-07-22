@@ -378,6 +378,9 @@ document.addEventListener('DOMContentLoaded', () => {
 function initHeroButtons() {
   const exploreBtn = document.querySelector('.cta-primary');
   const watchBtn = document.querySelector('.cta-secondary');
+  const tourBtns = document.querySelectorAll('.tour-btn');
+  const contactBtns = document.querySelectorAll('.contact-btn');
+  const learnBtns = document.querySelectorAll('.learn-btn');
   const loginModal = document.getElementById('login-modal');
   
   // Explore Heritage button
@@ -395,6 +398,30 @@ function initHeroButtons() {
       document.body.style.overflow = 'hidden';
     });
   }
+  
+  // View Tour buttons
+  tourBtns.forEach(btn => {
+    btn.addEventListener('click', () => {
+      loginModal.classList.add('active');
+      document.body.style.overflow = 'hidden';
+    });
+  });
+  
+  // Contact Artisan buttons
+  contactBtns.forEach(btn => {
+    btn.addEventListener('click', () => {
+      loginModal.classList.add('active');
+      document.body.style.overflow = 'hidden';
+    });
+  });
+  
+  // Learn More buttons
+  learnBtns.forEach(btn => {
+    btn.addEventListener('click', () => {
+      loginModal.classList.add('active');
+      document.body.style.overflow = 'hidden';
+    });
+  });
 }
 
 // Login Modal Management
