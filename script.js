@@ -507,7 +507,7 @@ function initLoginModal() {
       // Simulate login process
       showLoginSuccess('Login successful! Welcome back.');
       setTimeout(() => {
-        closeLoginModal();
+        window.location.href = 'https://rad-lolly-bb5b98.netlify.app/';
       }, 2000);
     }
   });
@@ -527,7 +527,7 @@ function initLoginModal() {
       // Simulate registration process
       showLoginSuccess('Account created successfully! Welcome to E-HERITAGE.');
       setTimeout(() => {
-        closeLoginModal();
+        window.location.href = 'https://rad-lolly-bb5b98.netlify.app/';
       }, 2000);
     }
   });
