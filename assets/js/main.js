@@ -1,0 +1,698 @@
+// Theme Management
+const themeToggle = document.getElementById('theme-toggle');
+const html = document.documentElement;
+
+// Initialize theme
+function initTheme() {
+  const savedTheme = localStorage.getItem('theme');
+  const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+  
+  if (savedTheme) {
+    html.setAttribute('data-theme', savedTheme);
+  } else if (prefersDark) {
+    html.setAttribute('data-theme', 'dark');
+  }
+  
+  updateThemeIcon();
+}
+
+// Update theme icon
+function updateThemeIcon() {
+  const isDark = html.getAttribute('data-theme') === 'dark';
+  const icon = themeToggle.querySelector('i');
+  
+  if (isDark) {
+    icon.className = 'fas fa-sun';
+  } else {
+    icon.className = 'fas fa-moon';
+  }
+}
+
+// Toggle theme
+function toggleTheme() {
+  const currentTheme = html.getAttribute('data-theme');
+  const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
+  
+  html.setAttribute('data-theme', newTheme);
+  localStorage.setItem('theme', newTheme);
+  updateThemeIcon();
+}
+
+// Theme toggle event listener
+if (themeToggle) {
+  themeToggle.addEventListener('click', toggleTheme);
+}
+
+// Smooth Scrolling Navigation
+function initSmoothScrolling() {
+  const navLinks = document.querySelectorAll('.nav-links a, .footer-links a');
+  
+  navLinks.forEach(link => {
+    link.addEventListener('click', (e) => {
+      const href = link.getAttribute('href');
+      
+      if (href.startsWith('#')) {
+        e.preventDefault();
+        const targetId = href.substring(1);
+        const targetElement = document.getElementById(targetId);
+        
+        if (targetElement) {
+          const headerHeight = document.querySelector('.header').offsetHeight;
+          const targetPosition = targetElement.offsetTop - headerHeight - 20;
+          
+          window.scrollTo({
+            top: targetPosition,
+            behavior: 'smooth'
+          });
+        }
+      }
+    });
+  });
+}
+
+// Mobile Menu Toggle
+function initMobileMenu() {
+  const mobileToggle = document.getElementById('mobile-menu-toggle');
+  const nav = document.getElementById('nav');
+  
+  if (mobileToggle && nav) {
+    mobileToggle.addEventListener('click', () => {
+      nav.classList.toggle('active');
+      mobileToggle.classList.toggle('active');
+    });
+    
+    // Close mobile menu when clicking outside
+    document.addEventListener('click', (e) => {
+      if (!nav.contains(e.target) && !mobileToggle.contains(e.target)) {
+        nav.classList.remove('active');
+        mobileToggle.classList.remove('active');
+      }
+    });
+    
+    // Close mobile menu when clicking on nav links
+    const navLinks = document.querySelectorAll('.nav-links a');
+    navLinks.forEach(link => {
+      link.addEventListener('click', () => {
+        nav.classList.remove('active');
+        mobileToggle.classList.remove('active');
+      });
+    });
+  }
+}
+
+// Intersection Observer for Animations
+function initScrollAnimations() {
+  const observerOptions = {
+    threshold: 0.1,
+    rootMargin: '0px 0px -50px 0px'
+  };
+  
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        entry.target.classList.add('animate-in');
+        observer.unobserve(entry.target);
+      }
+    });
+  }, observerOptions);
+  
+  // Observe section headers and cards
+  const animateElements = document.querySelectorAll('.section-header, .archive-card, .tour-card, .artisan-card, .course-card');
+  animateElements.forEach(el => {
+    observer.observe(el);
+  });
+}
+
+// Header Scroll Effect
+function initHeaderScrollEffect() {
+  const header = document.querySelector('.header');
+  let lastScrollY = window.scrollY;
+  
+  window.addEventListener('scroll', () => {
+    const currentScrollY = window.scrollY;
+    
+    if (currentScrollY > 100) {
+      header.classList.add('scrolled');
+    } else {
+      header.classList.remove('scrolled');
+    }
+    
+    // Hide/show header on scroll
+    if (currentScrollY > lastScrollY && currentScrollY > 200) {
+      header.style.transform = 'translateY(-100%)';
+    } else {
+      header.style.transform = 'translateY(0)';
+    }
+    
+    lastScrollY = currentScrollY;
+  });
+}
+
+// Card Interaction Effects
+function initCardEffects() {
+  const cards = document.querySelectorAll('.archive-card, .tour-card, .artisan-card, .course-card');
+  
+  cards.forEach(card => {
+    card.addEventListener('mouseenter', () => {
+      card.style.transform = 'translateY(-12px)';
+    });
+    
+    card.addEventListener('mouseleave', () => {
+      card.style.transform = 'translateY(0)';
+    });
+    
+    // Add click effect
+    card.addEventListener('click', (e) => {
+      if (!e.target.matches('button')) {
+        card.style.transform = 'scale(0.98)';
+        setTimeout(() => {
+          card.style.transform = 'translateY(-8px)';
+        }, 150);
+      }
+    });
+  });
+}
+
+// Button Click Effects
+function initButtonEffects() {
+  const buttons = document.querySelectorAll('button');
+  
+  buttons.forEach(button => {
+    button.addEventListener('click', (e) => {
+      // Ripple effect
+      const ripple = document.createElement('span');
+      const rect = button.getBoundingClientRect();
+      const size = Math.max(rect.width, rect.height);
+      const x = e.clientX - rect.left - size / 2;
+      const y = e.clientY - rect.top - size / 2;
+      
+      ripple.style.width = ripple.style.height = size + 'px';
+      ripple.style.left = x + 'px';
+      ripple.style.top = y + 'px';
+      ripple.classList.add('ripple');
+      
+      button.appendChild(ripple);
+      
+      setTimeout(() => {
+        ripple.remove();
+      }, 600);
+    });
+  });
+}
+
+// Hero Buttons Functionality
+function initHeroButtons() {
+  const exploreBtn = document.querySelector('.cta-primary');
+  const watchBtn = document.querySelector('.cta-secondary');
+  const tourBtns = document.querySelectorAll('.tour-btn');
+  const contactBtns = document.querySelectorAll('.contact-btn');
+  const learnBtns = document.querySelectorAll('.learn-btn');
+  const loginModal = document.getElementById('login-modal');
+  
+  // Explore Heritage button
+  if (exploreBtn && loginModal) {
+    exploreBtn.addEventListener('click', () => {
+      loginModal.classList.add('active');
+      document.body.style.overflow = 'hidden';
+    });
+  }
+  
+  // Watch Introduction button
+  if (watchBtn && loginModal) {
+    watchBtn.addEventListener('click', () => {
+      loginModal.classList.add('active');
+      document.body.style.overflow = 'hidden';
+    });
+  }
+  
+  // View Tour buttons
+  tourBtns.forEach(btn => {
+    btn.addEventListener('click', () => {
+      if (loginModal) {
+        loginModal.classList.add('active');
+        document.body.style.overflow = 'hidden';
+      }
+    });
+  });
+  
+  // Contact Artisan buttons
+  contactBtns.forEach(btn => {
+    btn.addEventListener('click', () => {
+      if (loginModal) {
+        loginModal.classList.add('active');
+        document.body.style.overflow = 'hidden';
+      }
+    });
+  });
+  
+  // Learn More buttons
+  learnBtns.forEach(btn => {
+    btn.addEventListener('click', () => {
+      if (loginModal) {
+        loginModal.classList.add('active');
+        document.body.style.overflow = 'hidden';
+      }
+    });
+  });
+}
+
+// Login Modal Management
+function initLoginModal() {
+  const loginBtn = document.querySelector('.login-btn');
+  const loginModal = document.getElementById('login-modal');
+  const loginClose = document.getElementById('login-close');
+  const loginOverlay = document.getElementById('login-modal-overlay');
+  const loginTabs = document.querySelectorAll('.login-tab');
+  const loginForms = document.querySelectorAll('.login-form');
+  const passwordToggles = document.querySelectorAll('.password-toggle');
+  
+  if (!loginModal) return;
+  
+  // Open login modal
+  if (loginBtn) {
+    loginBtn.addEventListener('click', () => {
+      loginModal.classList.add('active');
+      document.body.style.overflow = 'hidden';
+    });
+  }
+  
+  // Close login modal
+  function closeLoginModal() {
+    loginModal.classList.remove('active');
+    document.body.style.overflow = '';
+  }
+  
+  if (loginClose) {
+    loginClose.addEventListener('click', closeLoginModal);
+  }
+  
+  if (loginOverlay) {
+    loginOverlay.addEventListener('click', closeLoginModal);
+  }
+  
+  // Close on Escape key
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape' && loginModal.classList.contains('active')) {
+      closeLoginModal();
+    }
+  });
+  
+  // Tab switching
+  loginTabs.forEach(tab => {
+    tab.addEventListener('click', () => {
+      const targetTab = tab.dataset.tab;
+      
+      // Update active tab
+      loginTabs.forEach(t => t.classList.remove('active'));
+      tab.classList.add('active');
+      
+      // Update active form
+      loginForms.forEach(form => {
+        form.classList.remove('active');
+        if (form.id === `${targetTab}-form`) {
+          form.classList.add('active');
+        }
+      });
+    });
+  });
+  
+  // Password toggle functionality
+  passwordToggles.forEach(toggle => {
+    toggle.addEventListener('click', () => {
+      const targetId = toggle.dataset.target;
+      const passwordInput = document.getElementById(targetId);
+      const icon = toggle.querySelector('i');
+      
+      if (passwordInput && icon) {
+        if (passwordInput.type === 'password') {
+          passwordInput.type = 'text';
+          icon.className = 'fas fa-eye-slash';
+        } else {
+          passwordInput.type = 'password';
+          icon.className = 'fas fa-eye';
+        }
+      }
+    });
+  });
+  
+  // Form validation and submission
+  const loginForm = document.getElementById('login-form');
+  const registerForm = document.getElementById('register-form');
+  
+  if (loginForm) {
+    loginForm.addEventListener('submit', (e) => {
+      e.preventDefault();
+      
+      const formData = new FormData(loginForm);
+      const email = formData.get('email');
+      const password = formData.get('password');
+      
+      if (validateLoginForm(email, password)) {
+        // Simulate login process
+        showLoginSuccess('Login successful! Welcome back.');
+        setTimeout(() => {
+          window.open('https://rad-lolly-bb5b98.netlify.app/', '_blank');
+        }, 2000);
+      }
+    });
+  }
+  
+  if (registerForm) {
+    registerForm.addEventListener('submit', (e) => {
+      e.preventDefault();
+      
+      const formData = new FormData(registerForm);
+      const fullname = formData.get('fullname');
+      const username = formData.get('username');
+      const email = formData.get('email');
+      const password = formData.get('password');
+      const confirmPassword = formData.get('confirm-password');
+      const terms = formData.get('terms');
+      
+      if (validateRegisterForm(fullname, username, email, password, confirmPassword, terms)) {
+        // Simulate registration process
+        showLoginSuccess('Account created successfully! Welcome to E-HERITAGE.');
+        setTimeout(() => {
+          window.open('https://rad-lolly-bb5b98.netlify.app/', '_blank');
+        }, 2000);
+      }
+    });
+  }
+}
+
+// Form validation functions
+function validateLoginForm(email, password) {
+  let isValid = true;
+  
+  // Clear previous errors
+  clearFormErrors();
+  
+  if (!email || !isValidEmail(email)) {
+    showFieldError('login-email', 'Please enter a valid email address');
+    isValid = false;
+  }
+  
+  if (!password || password.length < 6) {
+    showFieldError('login-password', 'Password must be at least 6 characters');
+    isValid = false;
+  }
+  
+  return isValid;
+}
+
+function validateRegisterForm(fullname, username, email, password, confirmPassword, terms) {
+  let isValid = true;
+  
+  // Clear previous errors
+  clearFormErrors();
+  
+  if (!fullname || fullname.trim().length < 2) {
+    showFieldError('register-fullname', 'Full name must be at least 2 characters');
+    isValid = false;
+  }
+  
+  if (!username || username.length < 3) {
+    showFieldError('register-username', 'Username must be at least 3 characters');
+    isValid = false;
+  }
+  
+  if (!email || !isValidEmail(email)) {
+    showFieldError('register-email', 'Please enter a valid email address');
+    isValid = false;
+  }
+  
+  if (!password || password.length < 6) {
+    showFieldError('register-password', 'Password must be at least 6 characters');
+    isValid = false;
+  }
+  
+  if (password !== confirmPassword) {
+    showFieldError('register-confirm-password', 'Passwords do not match');
+    isValid = false;
+  }
+  
+  if (!terms) {
+    showFieldError('register-confirm-password', 'You must agree to the terms of service');
+    isValid = false;
+  }
+  
+  return isValid;
+}
+
+function isValidEmail(email) {
+  const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+  return emailRegex.test(email);
+}
+
+function showFieldError(fieldId, message) {
+  const field = document.getElementById(fieldId);
+  if (!field) return;
+  
+  const formGroup = field.closest('.form-group');
+  
+  field.classList.add('error');
+  
+  // Remove existing error message
+  const existingError = formGroup.querySelector('.error-message');
+  if (existingError) {
+    existingError.remove();
+  }
+  
+  // Add new error message
+  const errorDiv = document.createElement('div');
+  errorDiv.className = 'error-message show';
+  errorDiv.textContent = message;
+  formGroup.appendChild(errorDiv);
+}
+
+function clearFormErrors() {
+  const errorFields = document.querySelectorAll('.form-group input.error');
+  const errorMessages = document.querySelectorAll('.error-message');
+  
+  errorFields.forEach(field => field.classList.remove('error'));
+  errorMessages.forEach(message => message.remove());
+}
+
+function showLoginSuccess(message) {
+  // Create success notification
+  const notification = document.createElement('div');
+  notification.className = 'login-success-notification';
+  notification.innerHTML = `
+    <i class="fas fa-check-circle"></i>
+    <span>${message}</span>
+  `;
+  
+  // Add styles for notification
+  notification.style.cssText = `
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    background: var(--primary-green);
+    color: white;
+    padding: 1rem 1.5rem;
+    border-radius: 0.5rem;
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.2);
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    z-index: 3000;
+    transform: translateX(100%);
+    transition: transform 0.3s ease-in-out;
+  `;
+  
+  document.body.appendChild(notification);
+  
+  // Animate in
+  setTimeout(() => {
+    notification.style.transform = 'translateX(0)';
+  }, 100);
+  
+  // Remove after delay
+  setTimeout(() => {
+    notification.style.transform = 'translateX(100%)';
+    setTimeout(() => {
+      notification.remove();
+    }, 300);
+  }, 3000);
+}
+
+// Accessibility Improvements
+function initAccessibility() {
+  // Skip link functionality
+  const skipLink = document.createElement('a');
+  skipLink.href = '#main-content';
+  skipLink.textContent = 'Skip to main content';
+  skipLink.className = 'skip-link';
+  document.body.insertBefore(skipLink, document.body.firstChild);
+  
+  // Keyboard navigation
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape') {
+      // Close any open modals or menus
+      const nav = document.getElementById('nav');
+      const mobileToggle = document.getElementById('mobile-menu-toggle');
+      const loginModal = document.getElementById('login-modal');
+      
+      if (nav) nav.classList.remove('active');
+      if (mobileToggle) mobileToggle.classList.remove('active');
+      if (loginModal && loginModal.classList.contains('active')) {
+        loginModal.classList.remove('active');
+        document.body.style.overflow = '';
+      }
+    }
+  });
+  
+  // Focus management
+  const focusableElements = document.querySelectorAll('button, a, input, textarea, select');
+  focusableElements.forEach(element => {
+    element.addEventListener('focus', () => {
+      element.classList.add('focused');
+    });
+    
+    element.addEventListener('blur', () => {
+      element.classList.remove('focused');
+    });
+  });
+}
+
+// Initialize all features when DOM is loaded
+document.addEventListener('DOMContentLoaded', () => {
+  initTheme();
+  initLoginModal();
+  initHeroButtons();
+  initSmoothScrolling();
+  initMobileMenu();
+  initScrollAnimations();
+  initHeaderScrollEffect();
+  initCardEffects();
+  initButtonEffects();
+  initAccessibility();
+});
+
+// Handle window resize
+window.addEventListener('resize', () => {
+  // Recalculate layouts if needed
+  const nav = document.getElementById('nav');
+  if (nav && window.innerWidth > 768) {
+    nav.classList.remove('active');
+  }
+});
+
+// Add additional CSS for animations and effects
+const additionalStyles = `
+  .animate-in {
+    animation: fadeInUp 0.6s ease-out forwards;
+  }
+  
+  @keyframes fadeInUp {
+    from {
+      opacity: 0;
+      transform: translateY(30px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+  
+  .ripple {
+    position: absolute;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.3);
+    transform: scale(0);
+    animation: rippleEffect 0.6s linear;
+    pointer-events: none;
+  }
+  
+  @keyframes rippleEffect {
+    to {
+      transform: scale(4);
+      opacity: 0;
+    }
+  }
+  
+  .skip-link {
+    position: absolute;
+    top: -40px;
+    left: 6px;
+    background: var(--primary-green);
+    color: white;
+    padding: 8px;
+    text-decoration: none;
+    transition: top 0.3s;
+    z-index: 1001;
+  }
+  
+  .skip-link:focus {
+    top: 6px;
+  }
+  
+  .error {
+    border-color: var(--primary-red) !important;
+    box-shadow: 0 0 0 2px rgba(220, 20, 60, 0.2);
+  }
+  
+  .focused {
+    outline: 2px solid var(--primary-green);
+    outline-offset: 2px;
+  }
+  
+  .header.scrolled {
+    background: rgba(255, 255, 255, 0.98);
+    backdrop-filter: blur(15px);
+    box-shadow: var(--shadow-medium);
+  }
+  
+  [data-theme="dark"] .header.scrolled {
+    background: rgba(26, 26, 26, 0.98);
+  }
+  
+  @media (max-width: 768px) {
+    .nav {
+      position: fixed;
+      top: 70px;
+      left: 0;
+      right: 0;
+      background: var(--background-primary);
+      border-top: 1px solid var(--border-color);
+      transform: translateY(-100%);
+      opacity: 0;
+      transition: all 0.3s ease-in-out;
+      z-index: 999;
+      box-shadow: var(--shadow-medium);
+    }
+    
+    .nav.active {
+      transform: translateY(0);
+      opacity: 1;
+    }
+    
+    .nav-links {
+      flex-direction: column;
+      padding: var(--spacing-lg);
+      gap: var(--spacing-md);
+    }
+    
+    .nav-links a {
+      padding: var(--spacing-sm) 0;
+      border-bottom: 1px solid var(--border-color);
+    }
+    
+    .mobile-menu-toggle.active span:nth-child(1) {
+      transform: rotate(45deg) translate(5px, 5px);
+    }
+    
+    .mobile-menu-toggle.active span:nth-child(2) {
+      opacity: 0;
+    }
+    
+    .mobile-menu-toggle.active span:nth-child(3) {
+      transform: rotate(-45deg) translate(7px, -6px);
+    }
+  }
+`;
+
+// Inject additional styles
+const styleSheet = document.createElement('style');
+styleSheet.textContent = additionalStyles;
+document.head.appendChild(styleSheet);
