@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>E-HERITAGE - Digitalization of Ethiopian Heritage</title>
-    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="styles.css">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
 </head>
 <body>
@@ -30,7 +30,7 @@
                     <button class="theme-toggle" id="theme-toggle" aria-label="Toggle dark mode">
                         <i class="fas fa-moon"></i>
                     </button>
-                    <button class="login-btn">Login</button>
+                    <button class="login-btn" id="login-btn">Login</button>
                     <button class="mobile-menu-toggle" id="mobile-menu-toggle">
                         <span></span>
                         <span></span>
@@ -50,10 +50,10 @@
         <div class="container">
             <div class="hero-content">
                 <h1 class="hero-title">Discover Ethiopia's Rich Heritage</h1>
-                <p class="hero-subtitle">Explore thousands of years of history, culture, and traditions preserved for future generations</p>
+                <p class="hero-subtitle">Explore thousands of years of history, culture, and traditions preserved for future generations through digital innovation</p>
                 <div class="hero-actions">
-                    <button class="cta-primary">Explore Heritage</button>
-                    <button class="cta-secondary">Watch Introduction</button>
+                    <button class="cta-primary" onclick="scrollToSection('archive')">Explore Heritage</button>
+                    <button class="cta-secondary" onclick="scrollToSection('virtual-tour')">Virtual Tours</button>
                 </div>
             </div>
         </div>
@@ -67,47 +67,47 @@
                 <p>Discover Ethiopia's rich cultural heritage through our comprehensive digital archive</p>
             </div>
             
-            <div class="archive-grid" id="archive-grid">
-                <div class="archive-card" data-category="manuscripts">
+            <div class="archive-grid">
+                <div class="archive-card shimmer-loading">
                     <div class="card-image">
                         <img src="https://images.pexels.com/photos/8078361/pexels-photo-8078361.jpeg?auto=compress&cs=tinysrgb&w=400" alt="Ethiopian Ancient Manuscripts" loading="lazy">
                     </div>
                     <div class="card-content">
                         <h3>Ancient Manuscripts</h3>
-                        <p>Explore centuries-old manuscripts and religious texts that preserve Ethiopia's literary heritage.</p>
+                        <p>Explore centuries-old manuscripts and religious texts that preserve Ethiopia's literary heritage and ancient wisdom.</p>
                         <span class="item-count">2,847 items</span>
                     </div>
                 </div>
                 
-                <div class="archive-card" data-category="places">
+                <div class="archive-card shimmer-loading">
                     <div class="card-image">
                         <img src="https://images.pexels.com/photos/13782844/pexels-photo-13782844.jpeg?auto=compress&cs=tinysrgb&w=400" alt="Ethiopian Historical Places" loading="lazy">
                     </div>
                     <div class="card-content">
                         <h3>Historical Places</h3>
-                        <p>Virtual tours of ancient cities, rock churches, and archaeological sites across Ethiopia.</p>
+                        <p>Virtual documentation of ancient cities, rock churches, and archaeological sites across Ethiopia.</p>
                         <span class="item-count">156 locations</span>
                     </div>
                 </div>
                 
-                <div class="archive-card" data-category="artifacts">
+                <div class="archive-card shimmer-loading">
                     <div class="card-image">
                         <img src="https://images.pexels.com/photos/7525074/pexels-photo-7525074.jpeg?auto=compress&cs=tinysrgb&w=400" alt="Ethiopian Cultural Artifacts" loading="lazy">
                     </div>
                     <div class="card-content">
                         <h3>Cultural Artifacts</h3>
-                        <p>Traditional crafts, ceremonial objects, and archaeological discoveries.</p>
+                        <p>Traditional crafts, ceremonial objects, and archaeological discoveries from Ethiopian heritage sites.</p>
                         <span class="item-count">3,421 artifacts</span>
                     </div>
                 </div>
                 
-                <div class="archive-card" data-category="stories">
+                <div class="archive-card shimmer-loading">
                     <div class="card-image">
                         <img src="https://images.pexels.com/photos/7525133/pexels-photo-7525133.jpeg?auto=compress&cs=tinysrgb&w=400" alt="Ethiopian Oral Traditions" loading="lazy">
                     </div>
                     <div class="card-content">
                         <h3>Oral Traditions</h3>
-                        <p>Stories, legends, and cultural practices passed down through generations.</p>
+                        <p>Stories, legends, and cultural practices passed down through generations of Ethiopian communities.</p>
                         <span class="item-count">892 stories</span>
                     </div>
                 </div>
@@ -120,18 +120,18 @@
         <div class="container">
             <div class="section-header">
                 <h2>Virtual Heritage Tours</h2>
-                <p>Experience Ethiopia's heritage sites from anywhere in the world</p>
+                <p>Experience Ethiopia's heritage sites from anywhere in the world with immersive virtual tours</p>
             </div>
             
-            <div class="tour-grid" id="tour-grid">
-                <div class="tour-card">
+            <div class="tour-grid">
+                <div class="tour-card shimmer-loading">
                     <div class="card-image">
                         <img src="https://images.pexels.com/photos/19028024/pexels-photo-19028024.jpeg?auto=compress&cs=tinysrgb&w=600" alt="Lalibela Rock-Hewn Churches" loading="lazy">
                         <div class="tour-badge">360° Tour</div>
                     </div>
                     <div class="card-content">
                         <h3>Rock-Hewn Churches of Lalibela</h3>
-                        <p>Explore the 11 medieval monolithic churches carved from solid volcanic rock.</p>
+                        <p>Explore the 11 medieval monolithic churches carved from solid volcanic rock in the 12th century.</p>
                         <div class="tour-info">
                             <span><i class="fas fa-map-marker-alt"></i> Lalibela, Amhara</span>
                             <span><i class="fas fa-clock"></i> 45 min tour</span>
@@ -140,14 +140,14 @@
                     </div>
                 </div>
                 
-                <div class="tour-card">
+                <div class="tour-card shimmer-loading">
                     <div class="card-image">
                         <img src="https://images.pexels.com/photos/16894494/pexels-photo-16894494.jpeg?auto=compress&cs=tinysrgb&w=600" alt="Axum Obelisks Ethiopia" loading="lazy">
                         <div class="tour-badge">VR Experience</div>
                     </div>
                     <div class="card-content">
                         <h3>Axum Obelisks</h3>
-                        <p>Discover the ancient Kingdom of Axum and its towering granite monuments.</p>
+                        <p>Discover the ancient Kingdom of Axum and its towering granite monuments dating back 1,700 years.</p>
                         <div class="tour-info">
                             <span><i class="fas fa-map-marker-alt"></i> Axum, Tigray</span>
                             <span><i class="fas fa-clock"></i> 35 min tour</span>
@@ -156,14 +156,14 @@
                     </div>
                 </div>
                 
-                <div class="tour-card">
+                <div class="tour-card shimmer-loading">
                     <div class="card-image">
                         <img src="https://images.pexels.com/photos/7525067/pexels-photo-7525067.jpeg?auto=compress&cs=tinysrgb&w=600" alt="Harar Jugol Historic Town" loading="lazy">
                         <div class="tour-badge">Interactive</div>
                     </div>
                     <div class="card-content">
                         <h3>Harar Jugol Historic Town</h3>
-                        <p>Walk through the narrow alleyways of the "City of Saints" and its 82 mosques.</p>
+                        <p>Walk through the narrow alleyways of the "City of Saints" with its 82 mosques and vibrant culture.</p>
                         <div class="tour-info">
                             <span><i class="fas fa-map-marker-alt"></i> Harar, Harari</span>
                             <span><i class="fas fa-clock"></i> 50 min tour</span>
@@ -180,18 +180,18 @@
         <div class="container">
             <div class="section-header">
                 <h2>Artisan Marketplace</h2>
-                <p>Connect with talented Ethiopian artisans and discover authentic handcrafted items</p>
+                <p>Connect with talented Ethiopian artisans and discover authentic handcrafted heritage items</p>
             </div>
             
-            <div class="marketplace-grid" id="marketplace-grid">
-                <div class="artisan-card">
+            <div class="marketplace-grid">
+                <div class="artisan-card shimmer-loading">
                     <div class="card-image">
                         <img src="https://images.pexels.com/photos/8806005/pexels-photo-8806005.jpeg?auto=compress&cs=tinysrgb&w=400" alt="Ethiopian Traditional Pottery" loading="lazy">
                     </div>
                     <div class="card-content">
                         <h3>Almaz Tadesse</h3>
                         <p class="artisan-specialty">Traditional Pottery</p>
-                        <p>Master potter creating beautiful ceramic pieces using ancient techniques passed down through generations.</p>
+                        <p>Master potter creating beautiful ceramic pieces using ancient techniques passed down through generations in Addis Ababa.</p>
                         <div class="artisan-info">
                             <span><i class="fas fa-star"></i> 4.9 (127 reviews)</span>
                             <span><i class="fas fa-map-marker-alt"></i> Addis Ababa</span>
@@ -200,14 +200,14 @@
                     </div>
                 </div>
                 
-                <div class="artisan-card">
+                <div class="artisan-card shimmer-loading">
                     <div class="card-image">
                         <img src="https://images.pexels.com/photos/8806012/pexels-photo-8806012.jpeg?auto=compress&cs=tinysrgb&w=400" alt="Ethiopian Traditional Weaving" loading="lazy">
                     </div>
                     <div class="card-content">
                         <h3>Bekele Worku</h3>
                         <p class="artisan-specialty">Traditional Weaving</p>
-                        <p>Expert weaver specializing in traditional Ethiopian textiles and colorful patterns.</p>
+                        <p>Expert weaver specializing in traditional Ethiopian textiles with vibrant patterns and natural dyes.</p>
                         <div class="artisan-info">
                             <span><i class="fas fa-star"></i> 4.8 (89 reviews)</span>
                             <span><i class="fas fa-map-marker-alt"></i> Bahir Dar</span>
@@ -216,14 +216,14 @@
                     </div>
                 </div>
                 
-                <div class="artisan-card">
+                <div class="artisan-card shimmer-loading">
                     <div class="card-image">
                         <img src="https://images.pexels.com/photos/7525070/pexels-photo-7525070.jpeg?auto=compress&cs=tinysrgb&w=400" alt="Ethiopian Traditional Jewelry" loading="lazy">
                     </div>
                     <div class="card-content">
                         <h3>Hanan Mohammed</h3>
                         <p class="artisan-specialty">Traditional Jewelry</p>
-                        <p>Skilled jewelry maker creating stunning pieces with traditional Ethiopian designs and precious metals.</p>
+                        <p>Skilled jewelry maker creating stunning pieces with traditional Ethiopian designs using precious metals and stones.</p>
                         <div class="artisan-info">
                             <span><i class="fas fa-star"></i> 4.9 (156 reviews)</span>
                             <span><i class="fas fa-map-marker-alt"></i> Dire Dawa</span>
@@ -232,14 +232,14 @@
                     </div>
                 </div>
                 
-                <div class="artisan-card">
+                <div class="artisan-card shimmer-loading">
                     <div class="card-image">
                         <img src="https://images.pexels.com/photos/8926794/pexels-photo-8926794.jpeg?auto=compress&cs=tinysrgb&w=400" alt="Ethiopian Wood Carving" loading="lazy">
                     </div>
                     <div class="card-content">
                         <h3>Teshome Assefa</h3>
                         <p class="artisan-specialty">Wood Carving</p>
-                        <p>Master wood carver creating intricate sculptures and functional items from Ethiopian hardwoods.</p>
+                        <p>Master wood carver creating intricate sculptures and functional items from Ethiopian hardwoods with traditional motifs.</p>
                         <div class="artisan-info">
                             <span><i class="fas fa-star"></i> 4.7 (92 reviews)</span>
                             <span><i class="fas fa-map-marker-alt"></i> Jimma</span>
@@ -256,17 +256,17 @@
         <div class="container">
             <div class="section-header">
                 <h2>Educational Portal</h2>
-                <p>Learn about Ethiopian history, culture, and heritage through our curated educational content</p>
+                <p>Learn about Ethiopian history, culture, and heritage through our curated educational courses</p>
             </div>
             
-            <div class="education-grid" id="education-grid">
-                <div class="course-card">
+            <div class="education-grid">
+                <div class="course-card shimmer-loading">
                     <div class="card-image">
                         <img src="https://images.pexels.com/photos/1334405/pexels-photo-1334405.jpeg?auto=compress&cs=tinysrgb&w=400" alt="Ethiopian Ancient History Course" loading="lazy">
                     </div>
                     <div class="card-content">
                         <h3>Ancient Ethiopian Civilizations</h3>
-                        <p>Explore the rise and fall of ancient kingdoms including Axum, Zagwe, and the Ethiopian Empire.</p>
+                        <p>Explore the rise and fall of ancient kingdoms including Axum, Zagwe, and the Ethiopian Empire through interactive lessons.</p>
                         <div class="course-meta">
                             <span><i class="fas fa-clock"></i> 6 hours</span>
                             <span><i class="fas fa-users"></i> 1,247 students</span>
@@ -276,13 +276,13 @@
                     </div>
                 </div>
                 
-                <div class="course-card">
+                <div class="course-card shimmer-loading">
                     <div class="card-image">
                         <img src="https://images.pexels.com/photos/159711/books-bookstore-book-reading-159711.jpeg?auto=compress&cs=tinysrgb&w=400" alt="Ethiopian Cultural Traditions Course" loading="lazy">
                     </div>
                     <div class="card-content">
                         <h3>Ethiopian Cultural Traditions</h3>
-                        <p>Discover the diverse cultural practices, festivals, and traditions of Ethiopia's ethnic groups.</p>
+                        <p>Discover the diverse cultural practices, festivals, and traditions of Ethiopia's 80+ ethnic groups and their unique heritage.</p>
                         <div class="course-meta">
                             <span><i class="fas fa-clock"></i> 4 hours</span>
                             <span><i class="fas fa-users"></i> 892 students</span>
@@ -292,13 +292,13 @@
                     </div>
                 </div>
                 
-                <div class="course-card">
+                <div class="course-card shimmer-loading">
                     <div class="card-image">
                         <img src="https://images.pexels.com/photos/8078361/pexels-photo-8078361.jpeg?auto=compress&cs=tinysrgb&w=400" alt="Geez Script Language Course" loading="lazy">
                     </div>
                     <div class="card-content">
                         <h3>Ge'ez Script and Language</h3>
-                        <p>Learn to read and understand the ancient Ge'ez script used in Ethiopian manuscripts.</p>
+                        <p>Learn to read and understand the ancient Ge'ez script used in Ethiopian manuscripts and religious texts.</p>
                         <div class="course-meta">
                             <span><i class="fas fa-clock"></i> 8 hours</span>
                             <span><i class="fas fa-users"></i> 543 students</span>
@@ -308,13 +308,13 @@
                     </div>
                 </div>
                 
-                <div class="course-card">
+                <div class="course-card shimmer-loading">
                     <div class="card-image">
                         <img src="https://images.pexels.com/photos/7525074/pexels-photo-7525074.jpeg?auto=compress&cs=tinysrgb&w=400" alt="Ethiopian Arts and Crafts Course" loading="lazy">
                     </div>
                     <div class="card-content">
                         <h3>Traditional Arts and Crafts</h3>
-                        <p>Master traditional Ethiopian art forms including painting, weaving, and metalwork.</p>
+                        <p>Master traditional Ethiopian art forms including painting, weaving, pottery, and metalwork with expert guidance.</p>
                         <div class="course-meta">
                             <span><i class="fas fa-clock"></i> 10 hours</span>
                             <span><i class="fas fa-users"></i> 724 students</span>
@@ -334,7 +334,7 @@
                 <div class="footer-section">
                     <div class="footer-logo">
                         <h3>E-HERITAGE</h3>
-                        <p>Preserving Ethiopia's heritage for future generations through digital innovation.</p>
+                        <p>Preserving Ethiopia's rich cultural heritage for future generations through innovative digital solutions and community engagement.</p>
                     </div>
                     <div class="social-links">
                         <a href="#" aria-label="Facebook"><i class="fab fa-facebook"></i></a>
@@ -350,6 +350,7 @@
                         <p><i class="fas fa-map-marker-alt"></i> Addis Ababa, Ethiopia</p>
                         <p><i class="fas fa-phone"></i> +251 11 123 4567</p>
                         <p><i class="fas fa-envelope"></i> info@e-heritage.et</p>
+                        <p><i class="fas fa-globe"></i> www.e-heritage.et</p>
                     </div>
                 </div>
                 
@@ -375,7 +376,7 @@
             </div>
             
             <div class="footer-bottom">
-                <p>&copy; 2024 E-HERITAGE. All rights reserved. Built with pride for Ethiopian heritage.</p>
+                <p>&copy; 2024 E-HERITAGE. All rights reserved. Built with pride for Ethiopian heritage preservation.</p>
             </div>
         </div>
     </footer>
@@ -434,11 +435,6 @@
                 </div>
                 
                 <div class="form-group">
-                    <label for="register-username">Username</label>
-                    <input type="text" id="register-username" name="username" required>
-                </div>
-                
-                <div class="form-group">
                     <label for="register-email">Email Address</label>
                     <input type="email" id="register-email" name="email" required>
                 </div>
@@ -473,21 +469,6 @@
                 
                 <button type="submit" class="login-submit">Create Account</button>
             </form>
-            
-            <div class="login-divider">
-                <span>or continue with</span>
-            </div>
-            
-            <div class="social-login">
-                <button class="social-btn google-btn">
-                    <i class="fab fa-google"></i>
-                    Google
-                </button>
-                <button class="social-btn facebook-btn">
-                    <i class="fab fa-facebook-f"></i>
-                    Facebook
-                </button>
-            </div>
         </div>
     </div>
 

@@ -39,9 +39,25 @@ function toggleTheme() {
 }
 
 // Theme toggle event listener
-themeToggle.addEventListener('click', toggleTheme);
+if (themeToggle) {
+  themeToggle.addEventListener('click', toggleTheme);
+}
 
 // Smooth Scrolling Navigation
+function scrollToSection(sectionId) {
+  const targetElement = document.getElementById(sectionId);
+  if (targetElement) {
+    const headerHeight = document.querySelector('.header').offsetHeight;
+    const targetPosition = targetElement.offsetTop - headerHeight - 20;
+    
+    window.scrollTo({
+      top: targetPosition,
+      behavior: 'smooth'
+    });
+  }
+}
+
+// Initialize smooth scrolling for navigation links
 function initSmoothScrolling() {
   const navLinks = document.querySelectorAll('.nav-links a, .footer-links a');
   
@@ -52,17 +68,7 @@ function initSmoothScrolling() {
       if (href.startsWith('#')) {
         e.preventDefault();
         const targetId = href.substring(1);
-        const targetElement = document.getElementById(targetId);
-        
-        if (targetElement) {
-          const headerHeight = document.querySelector('.header').offsetHeight;
-          const targetPosition = targetElement.offsetTop - headerHeight - 20;
-          
-          window.scrollTo({
-            top: targetPosition,
-            behavior: 'smooth'
-          });
-        }
+        scrollToSection(targetId);
       }
     });
   });
@@ -73,27 +79,29 @@ function initMobileMenu() {
   const mobileToggle = document.getElementById('mobile-menu-toggle');
   const nav = document.getElementById('nav');
   
-  mobileToggle.addEventListener('click', () => {
-    nav.classList.toggle('active');
-    mobileToggle.classList.toggle('active');
-  });
-  
-  // Close mobile menu when clicking outside
-  document.addEventListener('click', (e) => {
-    if (!nav.contains(e.target) && !mobileToggle.contains(e.target)) {
-      nav.classList.remove('active');
-      mobileToggle.classList.remove('active');
-    }
-  });
-  
-  // Close mobile menu when clicking on nav links
-  const navLinks = document.querySelectorAll('.nav-links a');
-  navLinks.forEach(link => {
-    link.addEventListener('click', () => {
-      nav.classList.remove('active');
-      mobileToggle.classList.remove('active');
+  if (mobileToggle && nav) {
+    mobileToggle.addEventListener('click', () => {
+      nav.classList.toggle('active');
+      mobileToggle.classList.toggle('active');
     });
-  });
+    
+    // Close mobile menu when clicking outside
+    document.addEventListener('click', (e) => {
+      if (!nav.contains(e.target) && !mobileToggle.contains(e.target)) {
+        nav.classList.remove('active');
+        mobileToggle.classList.remove('active');
+      }
+    });
+    
+    // Close mobile menu when clicking on nav links
+    const navLinks = document.querySelectorAll('.nav-links a');
+    navLinks.forEach(link => {
+      link.addEventListener('click', () => {
+        nav.classList.remove('active');
+        mobileToggle.classList.remove('active');
+      });
+    });
+  }
 }
 
 // Shimmer Loading Effect Management
@@ -217,216 +225,9 @@ function initButtonEffects() {
   });
 }
 
-// Search Functionality (placeholder)
-function initSearch() {
-  const searchInputs = document.querySelectorAll('input[type="search"]');
-  
-  searchInputs.forEach(input => {
-    input.addEventListener('input', (e) => {
-      const query = e.target.value.toLowerCase();
-      // Implement search logic here
-      console.log('Searching for:', query);
-    });
-  });
-}
-
-// Lazy Loading for Images
-function initLazyLoading() {
-  if ('IntersectionObserver' in window) {
-    const imageObserver = new IntersectionObserver((entries) => {
-      entries.forEach(entry => {
-        if (entry.isIntersecting) {
-          const img = entry.target;
-          img.src = img.dataset.src || img.src;
-          img.classList.remove('lazy');
-          imageObserver.unobserve(img);
-        }
-      });
-    });
-    
-    const lazyImages = document.querySelectorAll('img[loading="lazy"]');
-    lazyImages.forEach(img => {
-      imageObserver.observe(img);
-    });
-  }
-}
-
-// Form Validation (for contact forms)
-function initFormValidation() {
-  const forms = document.querySelectorAll('form');
-  
-  forms.forEach(form => {
-    form.addEventListener('submit', (e) => {
-      e.preventDefault();
-      
-      const inputs = form.querySelectorAll('input, textarea');
-      let isValid = true;
-      
-      inputs.forEach(input => {
-        if (input.hasAttribute('required') && !input.value.trim()) {
-          isValid = false;
-          input.classList.add('error');
-        } else {
-          input.classList.remove('error');
-        }
-      });
-      
-      if (isValid) {
-        // Handle form submission
-        console.log('Form is valid, submitting...');
-      }
-    });
-  });
-}
-
-// Performance Optimization
-function initPerformanceOptimizations() {
-  // Debounce scroll events
-  let scrollTimer = null;
-  window.addEventListener('scroll', () => {
-    if (scrollTimer !== null) {
-      clearTimeout(scrollTimer);
-    }
-    scrollTimer = setTimeout(() => {
-      // Handle scroll events here
-    }, 150);
-  });
-  
-  // Preload critical resources
-  const preloadLinks = [
-    'https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css'
-  ];
-  
-  preloadLinks.forEach(href => {
-    const link = document.createElement('link');
-    link.rel = 'preload';
-    link.as = 'style';
-    link.href = href;
-    document.head.appendChild(link);
-  });
-}
-
-// Error Handling
-function initErrorHandling() {
-  window.addEventListener('error', (e) => {
-    console.error('JavaScript error:', e.error);
-    // Implement error reporting here
-  });
-  
-  window.addEventListener('unhandledrejection', (e) => {
-    console.error('Unhandled promise rejection:', e.reason);
-    // Implement error reporting here
-  });
-}
-
-// Accessibility Improvements
-function initAccessibility() {
-  // Skip link functionality
-  const skipLink = document.createElement('a');
-  skipLink.href = '#main-content';
-  skipLink.textContent = 'Skip to main content';
-  skipLink.className = 'skip-link';
-  document.body.insertBefore(skipLink, document.body.firstChild);
-  
-  // Keyboard navigation
-  document.addEventListener('keydown', (e) => {
-    if (e.key === 'Escape') {
-      // Close any open modals or menus
-      const nav = document.getElementById('nav');
-      const mobileToggle = document.getElementById('mobile-menu-toggle');
-      nav.classList.remove('active');
-      mobileToggle.classList.remove('active');
-    }
-  });
-  
-  // Focus management
-  const focusableElements = document.querySelectorAll('button, a, input, textarea, select');
-  focusableElements.forEach(element => {
-    element.addEventListener('focus', () => {
-      element.classList.add('focused');
-    });
-    
-    element.addEventListener('blur', () => {
-      element.classList.remove('focused');
-    });
-  });
-}
-
-// Initialize all features when DOM is loaded
-document.addEventListener('DOMContentLoaded', () => {
-  initTheme();
-  initLoginModal();
-  initHeroButtons();
-  initSmoothScrolling();
-  initMobileMenu();
-  initScrollAnimations();
-  initHeaderScrollEffect();
-  initCardEffects();
-  initButtonEffects();
-  initSearch();
-  initLazyLoading();
-  initFormValidation();
-  initPerformanceOptimizations();
-  initErrorHandling();
-  initAccessibility();
-  
-  // Initialize shimmer loading after a short delay
-  setTimeout(initShimmerLoading, 500);
-});
-
-// Hero Buttons Functionality
-function initHeroButtons() {
-  const exploreBtn = document.querySelector('.cta-primary');
-  const watchBtn = document.querySelector('.cta-secondary');
-  const tourBtns = document.querySelectorAll('.tour-btn');
-  const contactBtns = document.querySelectorAll('.contact-btn');
-  const learnBtns = document.querySelectorAll('.learn-btn');
-  const loginModal = document.getElementById('login-modal');
-  
-  // Explore Heritage button
-  if (exploreBtn) {
-    exploreBtn.addEventListener('click', () => {
-      loginModal.classList.add('active');
-      document.body.style.overflow = 'hidden';
-    });
-  }
-  
-  // Watch Introduction button
-  if (watchBtn) {
-    watchBtn.addEventListener('click', () => {
-      loginModal.classList.add('active');
-      document.body.style.overflow = 'hidden';
-    });
-  }
-  
-  // View Tour buttons
-  tourBtns.forEach(btn => {
-    btn.addEventListener('click', () => {
-      loginModal.classList.add('active');
-      document.body.style.overflow = 'hidden';
-    });
-  });
-  
-  // Contact Artisan buttons
-  contactBtns.forEach(btn => {
-    btn.addEventListener('click', () => {
-      loginModal.classList.add('active');
-      document.body.style.overflow = 'hidden';
-    });
-  });
-  
-  // Learn More buttons
-  learnBtns.forEach(btn => {
-    btn.addEventListener('click', () => {
-      loginModal.classList.add('active');
-      document.body.style.overflow = 'hidden';
-    });
-  });
-}
-
 // Login Modal Management
 function initLoginModal() {
-  const loginBtn = document.querySelector('.login-btn');
+  const loginBtn = document.getElementById('login-btn');
   const loginModal = document.getElementById('login-modal');
   const loginClose = document.getElementById('login-close');
   const loginOverlay = document.getElementById('login-modal-overlay');
@@ -434,11 +235,15 @@ function initLoginModal() {
   const loginForms = document.querySelectorAll('.login-form');
   const passwordToggles = document.querySelectorAll('.password-toggle');
   
+  if (!loginModal) return;
+  
   // Open login modal
-  loginBtn.addEventListener('click', () => {
-    loginModal.classList.add('active');
-    document.body.style.overflow = 'hidden';
-  });
+  if (loginBtn) {
+    loginBtn.addEventListener('click', () => {
+      loginModal.classList.add('active');
+      document.body.style.overflow = 'hidden';
+    });
+  }
   
   // Close login modal
   function closeLoginModal() {
@@ -446,8 +251,13 @@ function initLoginModal() {
     document.body.style.overflow = '';
   }
   
-  loginClose.addEventListener('click', closeLoginModal);
-  loginOverlay.addEventListener('click', closeLoginModal);
+  if (loginClose) {
+    loginClose.addEventListener('click', closeLoginModal);
+  }
+  
+  if (loginOverlay) {
+    loginOverlay.addEventListener('click', closeLoginModal);
+  }
   
   // Close on Escape key
   document.addEventListener('keydown', (e) => {
@@ -482,12 +292,14 @@ function initLoginModal() {
       const passwordInput = document.getElementById(targetId);
       const icon = toggle.querySelector('i');
       
-      if (passwordInput.type === 'password') {
-        passwordInput.type = 'text';
-        icon.className = 'fas fa-eye-slash';
-      } else {
-        passwordInput.type = 'password';
-        icon.className = 'fas fa-eye';
+      if (passwordInput && icon) {
+        if (passwordInput.type === 'password') {
+          passwordInput.type = 'text';
+          icon.className = 'fas fa-eye-slash';
+        } else {
+          passwordInput.type = 'password';
+          icon.className = 'fas fa-eye';
+        }
       }
     });
   });
@@ -496,41 +308,44 @@ function initLoginModal() {
   const loginForm = document.getElementById('login-form');
   const registerForm = document.getElementById('register-form');
   
-  loginForm.addEventListener('submit', (e) => {
-    e.preventDefault();
-    
-    const formData = new FormData(loginForm);
-    const email = formData.get('email');
-    const password = formData.get('password');
-    
-    if (validateLoginForm(email, password)) {
-      // Simulate login process
-      showLoginSuccess('Login successful! Welcome back.');
-      setTimeout(() => {
-        window.open('https://rad-lolly-bb5b98.netlify.app/', '_blank');
-      }, 2000);
-    }
-  });
+  if (loginForm) {
+    loginForm.addEventListener('submit', (e) => {
+      e.preventDefault();
+      
+      const formData = new FormData(loginForm);
+      const email = formData.get('email');
+      const password = formData.get('password');
+      
+      if (validateLoginForm(email, password)) {
+        // Simulate login process
+        showLoginSuccess('Login successful! Welcome back to E-HERITAGE.');
+        setTimeout(() => {
+          closeLoginModal();
+        }, 2000);
+      }
+    });
+  }
   
-  registerForm.addEventListener('submit', (e) => {
-    e.preventDefault();
-    
-    const formData = new FormData(registerForm);
-    const fullname = formData.get('fullname');
-    const username = formData.get('username');
-    const email = formData.get('email');
-    const password = formData.get('password');
-    const confirmPassword = formData.get('confirm-password');
-    const terms = formData.get('terms');
-    
-    if (validateRegisterForm(fullname, username, email, password, confirmPassword, terms)) {
-      // Simulate registration process
-      showLoginSuccess('Account created successfully! Welcome to E-HERITAGE.');
-      setTimeout(() => {
-        window.open('https://rad-lolly-bb5b98.netlify.app/', '_blank');
-      }, 2000);
-    }
-  });
+  if (registerForm) {
+    registerForm.addEventListener('submit', (e) => {
+      e.preventDefault();
+      
+      const formData = new FormData(registerForm);
+      const fullname = formData.get('fullname');
+      const email = formData.get('email');
+      const password = formData.get('password');
+      const confirmPassword = formData.get('confirm-password');
+      const terms = formData.get('terms');
+      
+      if (validateRegisterForm(fullname, email, password, confirmPassword, terms)) {
+        // Simulate registration process
+        showLoginSuccess('Account created successfully! Welcome to E-HERITAGE.');
+        setTimeout(() => {
+          closeLoginModal();
+        }, 2000);
+      }
+    });
+  }
 }
 
 // Form validation functions
@@ -553,7 +368,7 @@ function validateLoginForm(email, password) {
   return isValid;
 }
 
-function validateRegisterForm(fullname, username, email, password, confirmPassword, terms) {
+function validateRegisterForm(fullname, email, password, confirmPassword, terms) {
   let isValid = true;
   
   // Clear previous errors
@@ -561,11 +376,6 @@ function validateRegisterForm(fullname, username, email, password, confirmPasswo
   
   if (!fullname || fullname.trim().length < 2) {
     showFieldError('register-fullname', 'Full name must be at least 2 characters');
-    isValid = false;
-  }
-  
-  if (!username || username.length < 3) {
-    showFieldError('register-username', 'Username must be at least 3 characters');
     isValid = false;
   }
   
@@ -599,6 +409,8 @@ function isValidEmail(email) {
 
 function showFieldError(fieldId, message) {
   const field = document.getElementById(fieldId);
+  if (!field) return;
+  
   const formGroup = field.closest('.form-group');
   
   field.classList.add('error');
@@ -613,6 +425,11 @@ function showFieldError(fieldId, message) {
   const errorDiv = document.createElement('div');
   errorDiv.className = 'error-message show';
   errorDiv.textContent = message;
+  errorDiv.style.cssText = `
+    color: var(--primary-red);
+    font-size: var(--font-size-xs);
+    margin-top: var(--spacing-xs);
+  `;
   formGroup.appendChild(errorDiv);
 }
 
@@ -667,32 +484,79 @@ function showLoginSuccess(message) {
   }, 3000);
 }
 
+// Accessibility Improvements
+function initAccessibility() {
+  // Skip link functionality
+  const skipLink = document.createElement('a');
+  skipLink.href = '#hero';
+  skipLink.textContent = 'Skip to main content';
+  skipLink.style.cssText = `
+    position: absolute;
+    top: -40px;
+    left: 6px;
+    background: var(--primary-green);
+    color: white;
+    padding: 8px;
+    text-decoration: none;
+    transition: top 0.3s;
+    z-index: 1001;
+  `;
+  
+  skipLink.addEventListener('focus', () => {
+    skipLink.style.top = '6px';
+  });
+  
+  skipLink.addEventListener('blur', () => {
+    skipLink.style.top = '-40px';
+  });
+  
+  document.body.insertBefore(skipLink, document.body.firstChild);
+  
+  // Keyboard navigation
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape') {
+      // Close any open modals or menus
+      const nav = document.getElementById('nav');
+      const mobileToggle = document.getElementById('mobile-menu-toggle');
+      const loginModal = document.getElementById('login-modal');
+      
+      if (nav) nav.classList.remove('active');
+      if (mobileToggle) mobileToggle.classList.remove('active');
+      if (loginModal && loginModal.classList.contains('active')) {
+        loginModal.classList.remove('active');
+        document.body.style.overflow = '';
+      }
+    }
+  });
+}
+
+// Initialize all features when DOM is loaded
+document.addEventListener('DOMContentLoaded', () => {
+  initTheme();
+  initSmoothScrolling();
+  initMobileMenu();
+  initLoginModal();
+  initScrollAnimations();
+  initHeaderScrollEffect();
+  initCardEffects();
+  initButtonEffects();
+  initAccessibility();
+  
+  // Initialize shimmer loading after a short delay
+  setTimeout(initShimmerLoading, 500);
+});
+
 // Handle window resize
 window.addEventListener('resize', () => {
   // Recalculate layouts if needed
   const nav = document.getElementById('nav');
-  if (window.innerWidth > 768) {
+  if (nav && window.innerWidth > 768) {
     nav.classList.remove('active');
   }
 });
 
-// Add additional CSS for animations and effects
-const additionalStyles = `
-  .animate-in {
-    animation: fadeInUp 0.6s ease-out forwards;
-  }
-  
-  @keyframes fadeInUp {
-    from {
-      opacity: 0;
-      transform: translateY(30px);
-    }
-    to {
-      opacity: 1;
-      transform: translateY(0);
-    }
-  }
-  
+// Add ripple effect styles
+const rippleStyles = `
   .ripple {
     position: absolute;
     border-radius: 50%;
@@ -709,103 +573,28 @@ const additionalStyles = `
     }
   }
   
-  .skip-link {
-    position: absolute;
-    top: -40px;
-    left: 6px;
-    background: var(--primary-green);
-    color: white;
-    padding: 8px;
-    text-decoration: none;
-    transition: top 0.3s;
-    z-index: 1001;
+  .animate-in {
+    animation: fadeInUp 0.6s ease-out forwards;
   }
   
-  .skip-link:focus {
-    top: 6px;
+  @keyframes fadeInUp {
+    from {
+      opacity: 0;
+      transform: translateY(30px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
   }
   
   .error {
     border-color: var(--primary-red) !important;
     box-shadow: 0 0 0 2px rgba(220, 20, 60, 0.2);
   }
-  
-  .focused {
-    outline: 2px solid var(--primary-green);
-    outline-offset: 2px;
-  }
-  
-  .header.scrolled {
-    background: rgba(255, 255, 255, 0.98);
-    backdrop-filter: blur(15px);
-    box-shadow: var(--shadow-medium);
-  }
-  
-  [data-theme="dark"] .header.scrolled {
-    background: rgba(26, 26, 26, 0.98);
-  }
-  
-  @media (max-width: 768px) {
-    .nav {
-      position: fixed;
-      top: 70px;
-      left: 0;
-      right: 0;
-      background: var(--background-primary);
-      border-top: 1px solid var(--border-color);
-      transform: translateY(-100%);
-      opacity: 0;
-      transition: all 0.3s ease-in-out;
-      z-index: 999;
-      box-shadow: var(--shadow-medium);
-    }
-    
-    .nav.active {
-      transform: translateY(0);
-      opacity: 1;
-    }
-    
-    .nav-links {
-      flex-direction: column;
-      padding: var(--spacing-lg);
-      gap: var(--spacing-md);
-    }
-    
-    .nav-links a {
-      padding: var(--spacing-sm) 0;
-      border-bottom: 1px solid var(--border-color);
-    }
-    
-    .mobile-menu-toggle.active span:nth-child(1) {
-      transform: rotate(45deg) translate(5px, 5px);
-    }
-    
-    .mobile-menu-toggle.active span:nth-child(2) {
-      opacity: 0;
-    }
-    
-    .mobile-menu-toggle.active span:nth-child(3) {
-      transform: rotate(-45deg) translate(7px, -6px);
-    }
-  }
 `;
 
-// Inject additional styles
+// Inject ripple effect styles
 const styleSheet = document.createElement('style');
-styleSheet.textContent = additionalStyles;
+styleSheet.textContent = rippleStyles;
 document.head.appendChild(styleSheet);
-
-// Export functions for potential WordPress integration
-if (typeof module !== 'undefined' && module.exports) {
-  module.exports = {
-    initTheme,
-    initSmoothScrolling,
-    initMobileMenu,
-    initShimmerLoading,
-    initScrollAnimations,
-    initHeaderScrollEffect,
-    initCardEffects,
-    initButtonEffects,
-    initAccessibility
-  };
-}
